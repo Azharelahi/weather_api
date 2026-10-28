@@ -10,17 +10,17 @@ import { usePinnedLocations } from "@/features/pinned-locations/hooks/usePinnedL
 import PinnedLocations from "@/features/pinned-locations/components/PinnedLocations";
 
 export default function Home() {
-  const {
-    city,
-    setCity,
-    location,
-    weather,
-    status,
-    loading,
-    loadWeatherByCity,
-    loadWeatherForCity,
-    useMyLocation,
-  } = useWeather();
+ const {
+  city,
+  setCity,
+  location,
+  weather,
+  status,
+  loading,
+  loadWeatherByCity,
+  loadWeatherForCity,
+  useMyLocation,
+} = useWeather();
 
   const {
     pinnedLocations,
@@ -87,12 +87,14 @@ export default function Home() {
           <p>Loading pinned locations...</p>
         </section>
       ) : (
-        <PinnedLocations
-          locations={pinnedLocations}
-          loading={loading}
-          onSelect={loadWeatherForCity}
-          onRemove={removePin}
-        />
+  
+<PinnedLocations
+  locations={pinnedLocations}
+  onSelect={(location) => loadWeatherForCity(location.name)}
+  onRemove={removePin}
+  loading={loading}
+/>
+
       )}
     </main>
   );
