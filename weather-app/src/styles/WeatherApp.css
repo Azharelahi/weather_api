@@ -11,7 +11,11 @@ body {
   background: linear-gradient(135deg, #dbeafe, #eff6ff, #e0f2fe);
   color: #172554;
 }
-
+.weather img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
 .container {
   width: 100%;
   max-width: 620px;
