@@ -1,5 +1,12 @@
 
-function SearchBar({ city, onCityChange, onSearch }) {
+"use client";
+
+export default function SearchBar({
+  city,
+  onCityChange,
+  onSearch,
+  loading,
+}) {
   return (
     <form className="search" onSubmit={onSearch}>
       <input
@@ -8,11 +15,12 @@ function SearchBar({ city, onCityChange, onSearch }) {
         value={city}
         onChange={(event) => onCityChange(event.target.value)}
         aria-label="City name"
+        required
       />
 
-      <button type="submit">Get Weather</button>
+      <button type="submit" disabled={loading}>
+        {loading ? "Loading..." : "Get Weather"}
+      </button>
     </form>
   );
 }
-
-export default SearchBar;
