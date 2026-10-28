@@ -140,9 +140,42 @@ button:disabled {
 }
 
 .actions {
+    justify-content: center;
+    margin-top: 22px;
+    display: flex;
+    gap: 25px;
+}
+.pinned-section {
+  margin-top: 24px;
+}
+
+.pinned-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+}
+
+.pinned-item {
   display: flex;
-  justify-content: center;
-  margin-top: 22px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.pinned-item:last-child {
+  border-bottom: none;
+}
+
+.pinned-item button {
+  cursor: pointer;
+  padding: 8px 12px;
+}
+
+.pinned-item button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 @media (max-width: 440px) {
