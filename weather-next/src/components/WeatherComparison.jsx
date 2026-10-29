@@ -18,6 +18,14 @@ export default function WeatherComparison() {
 
   function updateCity(index, value) {
     setCities((current) => current.map((city, i) => i === index ? value : city));
+    setPlaces([null, null]);
+    setMessage("Update both cities and compare again to refresh the results.");
+  }
+
+  function swapCities() {
+    setCities(([first, second]) => [second, first]);
+    setPlaces([null, null]);
+    setMessage("Cities swapped. Compare to load their current conditions.");
   }
 
   async function compare(event) {
@@ -43,7 +51,7 @@ export default function WeatherComparison() {
         return data;
       }));
       setPlaces(results);
-      setMessage("Current conditions, updated at each location's local time.");
+      setMessage("Showing the latest available conditions for both locations.");
     } catch (error) {
       setMessage(error.message);
     } finally {
@@ -60,18 +68,29 @@ export default function WeatherComparison() {
         </div>
       </div>
       <form className="comparison-form" onSubmit={compare}>
-        {cities.map((city, index) => (
-          <label className="comparison-field" key={index}>
-            <span>City {index + 1}</span>
-            <input
-              value={city}
-              onChange={(event) => updateCity(index, event.target.value)}
-              placeholder={index === 0 ? "e.g. Karachi" : "e.g. London"}
-              aria-label={`City ${index + 1} to compare`}
-              required
-            />
-          </label>
-        ))}
+        <label className="comparison-field">
+          <span>City 1</span>
+          <input
+            value={cities[0]}
+            onChange={(event) => updateCity(0, event.target.value)}
+            placeholder="e.g. Karachi"
+            aria-label="First city to compare"
+            required
+          />
+        </label>
+        <button className="swap-cities" type="button" onClick={swapCities} aria-label="Swap cities" title="Swap cities">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M7 7h13m0 0-3-3m3 3-3 3M17 17H4m0 0 3 3m-3-3 3-3" /></svg>
+        </button>
+        <label className="comparison-field">
+          <span>City 2</span>
+          <input
+            value={cities[1]}
+            onChange={(event) => updateCity(1, event.target.value)}
+            placeholder="e.g. London"
+            aria-label="Second city to compare"
+            required
+          />
+        </label>
         <button className="compare-button" type="submit" disabled={loading}>
           {loading ? "Comparing..." : "Compare weather"}
         </button>
