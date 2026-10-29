@@ -11,7 +11,7 @@ export function useCitySuggestions(query, enabled) {
     loading: false,
     error: "",
   });
-
+//azhar
   const normalizedQuery = query.trim();
 
   const localSuggestions = searchPakistanPlaces(normalizedQuery);
