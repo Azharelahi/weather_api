@@ -107,18 +107,22 @@ export default function Home() {
 
       {!pinsLoaded ? (
         <section className="card pinned-section">
-          <h2>📌 Pinned Locations</h2>
-          <p>Loading pinned locations...</p>
+          <div className="pinned-heading">
+            <div>
+              <p className="section-eyebrow">YOUR SAVED PLACES</p>
+              <h2>Pinned locations</h2>
+            </div>
+          </div>
+          <p className="pinned-loading">Loading your saved places...</p>
         </section>
       ) : (
-  
-<PinnedLocations
-  locations={pinnedLocations}
-  onSelect={(location) => loadWeatherForCity(location.name)}
-  onRemove={removePin}
-  loading={loading}
-/>
-
+        <PinnedLocations
+          locations={pinnedLocations}
+          currentLocation={location}
+          onSelect={(location) => loadWeatherForCity(location.name)}
+          onRemove={removePin}
+          loading={loading}
+        />
       )}
     </main>
   );
