@@ -8,6 +8,7 @@ import WeatherDetails from "@/components/WeatherDetails";
 import { useWeather } from "@/features/weather/hooks/useWeather";
 import { usePinnedLocations } from "@/features/pinned-locations/hooks/usePinnedLocations";
 import PinnedLocations from "@/features/pinned-locations/components/PinnedLocations";
+import ThemeToggle from "@/features/theme/components/ThemeToggle";
 
 export default function Home() {
  const {
@@ -33,6 +34,7 @@ export default function Home() {
   return (
     <main className="container">
       <header className="page-header">
+        <ThemeToggle />
         <h1>Weather App</h1>
         <p className="subtitle">
           Current weather based on your location
