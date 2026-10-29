@@ -21,23 +21,30 @@ export function useCitySuggestions(query, enabled) {
       ? result
       : { suggestions: [], loading: false, error: "" };
 
-  const seenPlaces = new Set(
-    localSuggestions.map((place) => place.name.toLocaleLowerCase())
+  const liveSuggestionsByName = new Map(
+    currentResult.suggestions.map((place) => [
+      place.name.toLocaleLowerCase(),
+      place,
+    ])
   );
+  const seenPlaces = new Set();
+  const suggestions = [];
 
-  const suggestions = [
-    ...localSuggestions,
-    ...currentResult.suggestions.filter((place) => {
-      const key = place.name.toLocaleLowerCase();
+  for (const localPlace of localSuggestions) {
+    const key = localPlace.name.toLocaleLowerCase();
+    const livePlace = liveSuggestionsByName.get(key);
+    seenPlaces.add(key);
+    suggestions.push(livePlace ? { ...localPlace, ...livePlace } : localPlace);
+  }
 
-      if (seenPlaces.has(key)) {
-        return false;
-      }
+  for (const livePlace of currentResult.suggestions) {
+    const key = livePlace.name.toLocaleLowerCase();
 
+    if (!seenPlaces.has(key)) {
       seenPlaces.add(key);
-      return true;
-    }),
-  ];
+      suggestions.push(livePlace);
+    }
+  }
 
   useEffect(() => {
     if (!enabled || !normalizedQuery) {
@@ -60,7 +67,8 @@ export function useCitySuggestions(query, enabled) {
 
       try {
         const response = await fetch(
-          `/api/weather/search?q=${encodeURIComponent(normalizedQuery)}`
+          `/api/weather/search?q=${encodeURIComponent(normalizedQuery)}`,
+          { cache: "no-store" }
         );
 
         const data = await response.json();

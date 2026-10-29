@@ -13,7 +13,12 @@ export function useWeather() {
   const [loading, setLoading] = useState(true);
 
   const fetchWeather = useCallback(
-    async (url, loadingMessage, clearOnError = false) => {
+    async (
+      url,
+      loadingMessage,
+      clearOnError = false,
+      preferredCityName = ""
+    ) => {
       setLoading(true);
       setStatus(loadingMessage);
 
@@ -27,9 +32,13 @@ export function useWeather() {
           );
         }
 
-        setLocation(data.location);
+        const weatherLocation = preferredCityName
+          ? { ...data.location, name: preferredCityName }
+          : data.location;
+
+        setLocation(weatherLocation);
         setWeather(data.current);
-        setCity(data.location.name);
+        setCity(weatherLocation.name);
 
         setStatus(
           `Last updated: ${data.current.last_updated}`
@@ -82,14 +91,71 @@ export function useWeather() {
   );
 
   const loadWeatherForCity = useCallback(
-    (cityName) => {
+    async (place) => {
+      const cityName = typeof place === "string" ? place : place.name;
       setCity(cityName);
 
-      return fetchWeather(
-        `/api/weather?city=${encodeURIComponent(cityName)}`,
-        `Loading weather for ${cityName}...`,
-        true
-      );
+      if (
+        typeof place !== "string" &&
+        Number.isFinite(place.latitude) &&
+        Number.isFinite(place.longitude)
+      ) {
+        return fetchWeather(
+          `/api/weather?lat=${place.latitude}&lon=${place.longitude}`,
+          `Loading weather for ${cityName}...`,
+          true,
+          cityName
+        );
+      }
+
+      const query =
+        typeof place === "string"
+          ? cityName
+          : [place.name, place.region, place.country]
+              .filter(Boolean)
+              .join(", ");
+
+      setLoading(true);
+      setStatus(`Finding ${cityName}...`);
+
+      try {
+        const response = await fetch(
+          `/api/weather/search?q=${encodeURIComponent(query)}`,
+          { cache: "no-store" }
+        );
+        const locations = await response.json();
+
+        if (!response.ok) {
+          throw new Error(locations.error || "Location search failed.");
+        }
+
+        const normalizedCityName = cityName.toLocaleLowerCase();
+        const resolvedPlace =
+          locations.find(
+            (location) =>
+              location.name.toLocaleLowerCase() === normalizedCityName &&
+              (typeof place === "string" ||
+                !place.countryCode ||
+                location.countryCode === place.countryCode)
+          ) || locations[0];
+
+        if (!resolvedPlace) {
+          throw new Error(`Could not find ${cityName}.`);
+        }
+
+        return await fetchWeather(
+          `/api/weather?lat=${resolvedPlace.latitude}&lon=${resolvedPlace.longitude}`,
+          `Loading weather for ${cityName}...`,
+          true,
+          cityName
+        );
+      } catch (error) {
+        setLocation(null);
+        setWeather(null);
+        setStatus(`Error: ${error.message}`);
+        setLoading(false);
+        return null;
+      }
     },
     [fetchWeather]
   );

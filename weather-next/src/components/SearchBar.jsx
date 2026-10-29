@@ -29,14 +29,12 @@ export default function SearchBar({
   }
 
   function selectSuggestion(suggestion) {
-    const place = [suggestion.name, suggestion.country]
-      .filter(Boolean)
-      .join(", ");
+    const place = suggestion.name.trim();
 
     setIsOpen(false);
     setActiveIndex(-1);
     onCityChange(place);
-    onCitySelect(place);
+    onCitySelect(suggestion);
   }
 
   function handleKeyDown(event) {

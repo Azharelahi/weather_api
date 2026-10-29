@@ -119,7 +119,7 @@ export default function Home() {
         <PinnedLocations
           locations={pinnedLocations}
           currentLocation={location}
-          onSelect={(location) => loadWeatherForCity(location.name)}
+          onSelect={loadWeatherForCity}
           onRemove={removePin}
           loading={loading}
         />
