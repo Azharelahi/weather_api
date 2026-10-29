@@ -91,14 +91,99 @@ h1 {
   margin-bottom: 22px;
 }
 
-.search input {
+.search-field {
+  position: relative;
   flex: 1;
+  min-width: 0;
+}
+
+.search input {
+  width: 100%;
   min-width: 0;
   padding: 12px;
   border: 1px solid var(--border);
   border-radius: 9px;
   background: var(--surface);
   color: var(--text-primary);
+}
+
+.city-suggestions {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + 8px);
+  right: 0;
+  left: 0;
+  max-height: 280px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--card-shadow);
+}
+
+.suggestion-heading {
+  margin: 4px 10px 6px;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.city-suggestions ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.suggestion-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.suggestion-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 600;
+}
+
+.suggestion-pin {
+  display: inline-grid;
+  width: 25px;
+  height: 25px;
+  flex: 0 0 25px;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--detail-background);
+  color: var(--detail-accent);
+  font-size: 14px;
+}
+
+.suggestion-option:hover,
+.suggestion-option[aria-selected="true"] {
+  background: var(--detail-background);
+}
+
+.suggestion-location {
+  color: var(--text-muted);
+  font-size: 13px;
+  text-align: right;
+}
+
+.suggestion-message {
+  margin: 0;
+  padding: 10px 12px;
+  color: var(--text-muted);
+  font-size: 14px;
 }
 
 button {
@@ -259,6 +344,14 @@ button:disabled {
 
   .search button {
     width: 100%;
+  }
+
+  .suggestion-option {
+    align-items: flex-start;
+  }
+
+  .suggestion-location {
+    max-width: 48%;
   }
 
   .temperature {

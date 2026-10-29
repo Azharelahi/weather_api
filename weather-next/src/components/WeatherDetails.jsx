@@ -1,24 +1,24 @@
 
 const fields = [
-  { label: "Feels Like", key: "feelslike_c", unit: "°C" },
-  { label: "Humidity", key: "humidity", unit: "%" },
-  { label: "Wind", key: "wind_kph", unit: " km/h" },
-  { label: "Cloud Cover", key: "cloud", unit: "%" },
-  { label: "Pressure", key: "pressure_mb", unit: " mb" },
-  { label: "UV Index", key: "uv", unit: "" },
+  { label: "Humidity", key: "humidity", unit: "%", mark: "H" },
+  { label: "Wind speed", key: "wind_kph", unit: " km/h", mark: "W" },
+  { label: "Cloud cover", key: "cloud", unit: "%", mark: "C" },
+  { label: "Pressure", key: "pressure_mb", unit: " mb", mark: "P" },
+  { label: "UV index", key: "uv", unit: "", mark: "UV" },
 ];
 
 export default function WeatherDetails({ weather }) {
   return (
-    <div className="details">
+    <section className="details" aria-label="Weather details">
       {fields.map((field) => (
         <div className="detail" key={field.key}>
-          <strong>{field.label}</strong>
-          <span>
+          <span className="detail-mark" aria-hidden="true">{field.mark}</span>
+          <span className="detail-label">{field.label}</span>
+          <strong className="detail-value">
             {weather ? `${weather[field.key]}${field.unit}` : "--"}
-          </span>
+          </strong>
         </div>
       ))}
-    </div>
+    </section>
   );
 }

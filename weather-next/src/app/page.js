@@ -34,11 +34,21 @@ export default function Home() {
   return (
     <main className="container">
       <header className="page-header">
+        <div className="brand">
+          <span className="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none">
+              <path d="M10 21.5h12a5.5 5.5 0 0 0 .4-11 7 7 0 0 0-13.2 1.8A4.6 4.6 0 0 0 10 21.5Z" />
+              <path d="m12 25-1 2m7-2-1 2m7-2-1 2" />
+            </svg>
+          </span>
+          <span>Atmos</span>
+        </div>
         <ThemeToggle />
-        <h1>Weather App</h1>
-        <p className="subtitle">
-          Current weather based on your location
-        </p>
+        <div className="page-intro">
+          <p className="eyebrow">YOUR LITTLE CORNER OF THE SKY</p>
+          <h1>Weather, made <span>clear.</span></h1>
+          <p className="subtitle">A fresh look at the day, wherever you are.</p>
+        </div>
       </header>
 
       <section className="card">
@@ -46,14 +56,24 @@ export default function Home() {
           city={city}
           onCityChange={setCity}
           onSearch={loadWeatherByCity}
+          onCitySelect={loadWeatherForCity}
           loading={loading}
         />
 
-        <h2 className="city">
-          {location
-            ? `${location.name}, ${location.country}`
-            : "Weather"}
-        </h2>
+        <div className="weather-heading">
+          <div>
+            <p className="section-eyebrow">CURRENT CONDITIONS</p>
+            <h2 className="city">
+              {location
+                ? `${location.name}, ${location.country}`
+                : "Your weather"}
+            </h2>
+          </div>
+          <span className="live-indicator">
+            <span aria-hidden="true" />
+            LIVE
+          </span>
+        </div>
 
         <p className="status" role="status" aria-live="polite">
           {status}
@@ -64,6 +84,7 @@ export default function Home() {
 
         <div className="actions">
           <button
+            className="action-button action-button-secondary"
             type="button"
             onClick={() => togglePin(location)}
             disabled={!location || loading || !pinsLoaded}
@@ -74,6 +95,7 @@ export default function Home() {
           </button>
 
           <button
+            className="action-button action-button-primary"
             type="button"
             onClick={useMyLocation}
             disabled={loading}
