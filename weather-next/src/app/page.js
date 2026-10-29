@@ -9,6 +9,7 @@ import { useWeather } from "@/features/weather/hooks/useWeather";
 import { usePinnedLocations } from "@/features/pinned-locations/hooks/usePinnedLocations";
 import PinnedLocations from "@/features/pinned-locations/components/PinnedLocations";
 import ThemeToggle from "@/features/theme/components/ThemeToggle";
+import WeatherComparison from "@/components/WeatherComparison";
 
 export default function Home() {
  const {
@@ -104,6 +105,8 @@ export default function Home() {
           </button>
         </div>
       </section>
+
+      <WeatherComparison />
 
       {!pinsLoaded ? (
         <section className="card pinned-section">
