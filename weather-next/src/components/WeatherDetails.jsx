@@ -22,3 +22,4 @@ export default function WeatherDetails({ weather }) {
     </section>
   );
 }
+//Azhar
